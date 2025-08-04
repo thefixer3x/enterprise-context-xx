@@ -3,11 +3,6 @@
   "name": "enterprise-context",
   "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "functions": {
-    "src/index.ts": {
-      "runtime": "@vercel/node@3.0.1"
-    }
-  },
   "rewrites": [
     {
       "source": "/api/v1/(.*)",
