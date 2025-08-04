@@ -49,3 +49,4 @@ secrets/
 # Local configuration
 *.local
 config.local.json
+.vercel

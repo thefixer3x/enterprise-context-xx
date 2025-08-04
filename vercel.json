@@ -1,46 +1,29 @@
 {
   "version": 2,
   "name": "enterprise-context",
-  "buildCommand": "bun run build",
-  "installCommand": "bun install",
-  "framework": null,
-  "builds": [
-    {
-      "src": "src/index.ts",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["package.json", "src/**", "dist/**"]
-      }
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "functions": {
+    "src/index.ts": {
+      "runtime": "@vercel/node@3.0.1"
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/api/v1/health",
-      "dest": "/src/index.ts"
+      "source": "/api/v1/(.*)",
+      "destination": "/api/index"
     },
     {
-      "src": "/api/v1/memories/(.*)",
-      "dest": "/src/index.ts"
+      "source": "/sse",
+      "destination": "/api/index"
     },
     {
-      "src": "/api/v1/api-keys/(.*)",
-      "dest": "/src/index.ts"
+      "source": "/mcp/sse",
+      "destination": "/api/index"
     },
     {
-      "src": "/api/v1/mcp/(.*)",
-      "dest": "/src/index.ts"
-    },
-    {
-      "src": "/api/v1/(.*)",
-      "dest": "/src/index.ts"
-    },
-    {
-      "src": "/sse",
-      "dest": "/src/index.ts"
-    },
-    {
-      "src": "/mcp/sse",
-      "dest": "/src/index.ts"
+      "source": "/(.*)",
+      "destination": "/api/index"
     }
   ],
   "headers": [
@@ -58,12 +41,6 @@
     }
   ],
   "env": {
-    "NODE_ENV": "production",
-    "NODE_VERSION": "18"
-  },
-  "functions": {
-    "src/index.ts": {
-      "maxDuration": 30
-    }
+    "NODE_ENV": "production"
   }
 }
