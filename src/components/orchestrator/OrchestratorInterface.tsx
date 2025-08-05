@@ -140,15 +140,19 @@ export const OrchestratorInterface: React.FC<OrchestratorInterfaceProps> = ({
     try {
       if (enabled) {
         const client = createMemoryClient({ apiUrl: '/api', apiKey: '' });
-        try {
-          const results = await client.searchMemories({ query: command });
-          const result: OrchestratorResult = { results };
-          addMessage({ id: Math.random().toString(), type: 'result', content: JSON.stringify(results, null, 2), result });
-          onCommandExecuted?.(result as any);
-        } catch (e) {
-          const msg = e instanceof Error ? e.message : String(e);
-          addMessage({ id: Math.random().toString(), type: 'error', content: msg });
+        const resp = await client.searchMemories({ query: command });
+        if (resp.error) {
+          throw new Error(resp.error);
         }
+        const results: MemorySearchResult[] = resp.data?.results ?? [];
+        const result: OrchestratorResult = { results };
+        addMessage({
+          id: Math.random().toString(),
+          type: 'result',
+          content: JSON.stringify(results, null, 2),
+          result
+        });
+        onCommandExecuted?.(result as any);
       }
     } catch (error) {
       addMessage({
