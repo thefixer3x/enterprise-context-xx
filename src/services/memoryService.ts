@@ -230,7 +230,7 @@ export class MemoryService {
       const { data: results, error } = await this.supabase
         .rpc('match_memories', {
           query_embedding: JSON.stringify(queryEmbedding),
-          match_threshold: filters.threshold || 0.7,
+          match_threshold: filters.threshold ?? 0.7,
           match_count: filters.limit || 20,
           organization_id_param: organizationId,
           memory_types_param: filters.memory_types || null,

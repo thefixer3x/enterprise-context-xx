@@ -212,7 +212,7 @@ export class AlignedMemoryService {
         .rpc('search_memory_entries', {
           query_embedding: JSON.stringify(queryEmbedding),
           user_id_param: userId,
-          similarity_threshold: filters.threshold || 0.7,
+          similarity_threshold: filters.threshold ?? 0.7,
           match_count: filters.limit || 20,
           memory_types: filters.memory_types || null,
           topic_id_param: filters.topic_id || null,
