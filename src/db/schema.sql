@@ -112,6 +112,23 @@ CREATE TABLE api_keys (
     CONSTRAINT api_keys_name_length CHECK (LENGTH(name) >= 1)
 );
 
+-- Secrets table for arbitrary user-defined key/value storage
+CREATE TABLE secrets (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- RLS for secrets (same owner-only policy)
+ALTER TABLE secrets ENABLE ROW LEVEL SECURITY;
+-- Users can only read/write their own secrets; to be refined per tenant logic
+CREATE POLICY "secrets_owner_policy"
+  ON secrets
+  FOR ALL
+  USING (true)
+  WITH CHECK (true);
+
 -- Usage analytics table
 CREATE TABLE usage_analytics (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

@@ -210,6 +210,10 @@ app.use(`${config.API_PREFIX}/${config.API_VERSION}/auth`, authRoutes);
 app.use(`${config.API_PREFIX}/${config.API_VERSION}/memory`, authMiddleware, memoryRoutes);
 app.use(`${config.API_PREFIX}/${config.API_VERSION}/api-keys`, apiKeyRoutes);
 
+// Secret management endpoints (Phase 9)
+import secretRoutes from '@/routes/api-secrets';
+app.use(`${config.API_PREFIX}/${config.API_VERSION}`, authMiddleware, secretRoutes);
+
 // MCP routes (for AI agents - different auth mechanism)
 app.use(`${config.API_PREFIX}/${config.API_VERSION}/mcp/api-keys`, mcpApiKeyRoutes);
 
