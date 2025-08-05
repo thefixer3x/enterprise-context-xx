@@ -10,8 +10,11 @@ declare const window: {
   open: (url: string, target?: string) => void;
 };
 
-// Note: Orchestrator temporarily disabled due to missing dependencies
-// import { orchestrate, parseOnly, ContextualOrchestrator, OrchestratorResult, ParsedCommand } from '../../../seyederick-monorepo-starter/packages/orchestrator';
+import { createMemoryClient, MemorySearchResult } from '@lanonasis/memory-client';
+
+// Simple orchestrator: perform semantic search on memory entries
+interface ParsedCommand { query: string; }
+interface OrchestratorResult { results?: MemorySearchResult[]; error?: string; }
 
 // Temporary interfaces for compilation
 interface OrchestratorResult {
@@ -59,6 +62,10 @@ export const OrchestratorInterface: React.FC<OrchestratorInterfaceProps> = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [commandPreview, setCommandPreview] = useState<ParsedCommand | null>(null);
+  const [enabled, setEnabled] = useState<boolean>(() => {
+    const stored = localStorage.getItem('orch-enabled');
+    return stored !== null ? JSON.parse(stored) : true;
+  });
   
   const messagesEndRef = useRef<unknown>(null);
   const inputRef = useRef<unknown>(null);
@@ -75,23 +82,14 @@ export const OrchestratorInterface: React.FC<OrchestratorInterfaceProps> = ({
   }, [messages]);
 
   useEffect(() => {
-    // Add welcome message
-    if (messages.length === 0) {
+    // Welcome message when enabled
+    if (enabled && messages.length === 0) {
       addMessage({
         type: 'system',
-        content: `🧠 **Memory Orchestrator Ready**
-        
-Try natural language commands like:
-• "search for API documentation"
-• "create memory about today's meeting"
-• "show my project memories"
-• "open memory visualizer"
-• "list my topics"
-
-Type your command below and press Enter!`,
+        content: '🧠 Memory Orchestrator ready. Ask me anything about your memories!',
       });
     }
-  }, []);
+  }, [messages, enabled]);
 
   const addMessage = (message: Omit<Message, 'id' | 'timestamp'>) => {
     const newMessage: Message = {
@@ -140,51 +138,17 @@ Type your command below and press Enter!`,
     });
 
     try {
-      // Temporarily disabled orchestrator - return placeholder result
-      const result: OrchestratorResult = {
-        success: false,
-        error: 'Orchestrator temporarily disabled - missing dependencies',
-        executionTime: 0,
-        command: {
-          action: 'placeholder',
-          target: command,
-          parameters: {}
+      if (enabled) {
+        const client = createMemoryClient({ apiUrl: '/api', apiKey: '' });
+        try {
+          const results = await client.searchMemories({ query: command });
+          const result: OrchestratorResult = { results };
+          addMessage({ id: Math.random().toString(), type: 'result', content: JSON.stringify(results, null, 2), result });
+          onCommandExecuted?.(result as any);
+        } catch (e) {
+          const msg = e instanceof Error ? e.message : String(e);
+          addMessage({ id: Math.random().toString(), type: 'error', content: msg });
         }
-      };
-      
-      if (result.success) {
-        // Add success result
-        addMessage({
-          type: 'result',
-          content: formatSuccessResult(result),
-          command: result.command,
-          result,
-        });
-
-        // Handle UI actions
-        if (result.command.tool === 'ui' && result.data?.action === 'open_url') {
-          if (onUIAction) {
-            onUIAction(result.command.action, result.data);
-          } else {
-            // Fallback: open in new window
-            if (result.data && 'url' in result.data && typeof result.data.url === 'string') {
-              window.open(result.data.url, '_blank');
-            }
-          }
-        }
-
-        // Callback for parent component
-        if (onCommandExecuted) {
-          onCommandExecuted(result);
-        }
-      } else {
-        // Add error message
-        addMessage({
-          type: 'error',
-          content: `❌ **Error**: ${result.error}`,
-          command: result.command,
-          result,
-        });
       }
     } catch (error) {
       addMessage({
@@ -300,10 +264,20 @@ Type your command below and press Enter!`,
           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
           <h3 className="font-semibold text-gray-900">Memory Orchestrator</h3>
         </div>
-        <div className="text-xs text-gray-500">
-          Natural Language Commands
-        </div>
-      </div>
+        <div className="flex items-center space-x-4">
+          <div className="text-xs text-gray-500">Natural Language Commands</div>
+          <label className="flex items-center space-x-1 text-xs">
+            <input
+              type="checkbox"
+              checked={enabled}
+              onChange={(e) => {
+                localStorage.setItem('orch-enabled', JSON.stringify(e.target.checked));
+                setEnabled(e.target.checked);
+              }}
+            />
+            <span>Enable Orchestrator</span>
+          </label>
+         </div>
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
