@@ -28,6 +28,31 @@
  - **Coverage badge**: Add Codecov badge to README.
  - **Threshold enforcement**: Fail CI if coverage drops below agreed minimum.
 
- ## Next Steps: Repo Setup
- 1. Gather the target remote repository name and owner.
- 2. Initialize a new GitHub repo and push this directory as its initial commit.
+ ## Phase 7: AI Orchestrator Enhancement (Sprint 7)
+ - **Backend Orchestrator Service**: Define and scaffold a dedicated orchestrator microservice with LLM integration, tooling plugins (memory-client, web search, code analysis).
+ - **Plugin Interface**: Build a plugin runner to call memory search, external search, code review, and credential management as tools.
+ - **Conversation/Memory Loop**: Implement retrieval-augmented generation when handling chat, with automatic memory creation and recall.
+
+ ## Phase 8: Dashboard & SDK Integration (Sprint 8)
+ - **UI Embedding**: Integrate the orchestrator service into the dashboard via a persistent chat panel with session storage.
+ - **Toggle & Defaults**: Provide enable/disable switch and auto-load on startup; load API/memory-client config dynamically.
+ - **Human Friendly Formatting**: Convert raw JSON or plugin outputs into cards, links, and rich text.
+
+ ## Phase 9: Credential & MCP Tooling (Sprint 9)
+ - **Secure Vault**: Build a credential manager UI and backend for API keys, secrets, and automated rotation.
+ - **MCP Connector Setup**: Provide one-click MCP server/client configuration flows for VSCode, Cursor, Windsurf.
+
+ ## Phase 10: External Context Plugins (Sprint 10)
+ - **Web Search Plugin**: Integrate a web-search API to fetch external documentation and enrich chat context.
+ - **Codebase Analysis Plugin**: Enable the orchestrator to consume and reason over the local codebase for live code review.
+
+ ## Phase 11: CI/CD in Fragments (Sprint 11)
+ - **Per-Phase Pipelines**: Split CI into discrete workflow fragments corresponding to each Sprint, allowing independent validation and deployment.
+ - **Orchestrator Service CI**: Automated build/test/deploy for the orchestrator backend.
+ - **Dashboard Integration CI**: End-to-end tests for UI embedding and session persistence.
+ - **Plugin Testing CI**: Verification jobs for each tool/plugin (search, code analysis, credential mgmt).
+
+ ## Phase 12: End-to-End Demonstration & Docs (Sprint 12)
+ - **Walkthrough Guide**: Publish step-by-step documentation showcasing the orchestrator flow end-to-end.
+ - **Usage Examples**: Provide example projects using the SDK, CLI, and dashboard orchestrator.
+ - **Release & Rollout**: Tag and release orchestrator and dashboard components as versioned artifacts.
