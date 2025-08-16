@@ -884,6 +884,8 @@ railway deploy
 
 ## 🛣️ **Roadmap**
 
+For a detailed multi-sprint execution strategy, see [PHASED_EXECUTION_PLAN.md](./PHASED_EXECUTION_PLAN.md) or import the structured plan from `src/config/phasedPlan.ts`.
+
 ### **✅ Phase 1: Core Platform** (Complete)
 - ✅ Vector memory storage with OpenAI embeddings
 - ✅ Dual authentication system (JWT + API Keys)
