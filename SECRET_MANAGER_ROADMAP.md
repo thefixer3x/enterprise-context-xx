@@ -76,3 +76,20 @@ This document outlines the concrete steps to deliver a multi-functional secret m
 
 ---
 _Next step: implement the `secretService.ts` and API routes according to this roadmap._
+
+
+implemented Phase 9:
+
+- DB schema: Added a secrets table with RLS policy in src/db/schema.sql.
+- SecretService: Created src/services/secretService.ts for secure key/value storage.
+- REST API: New routes in src/routes/api-secrets.ts for upsert (POST /api/v1/secrets) and fetch (GET /api/v1/secrets/:key).
+- Server integration: Mounted the new secret routes under the v1 API prefix with auth in src/server.ts.
+
+Next steps (outside this patch):
+
+1. Run migrations (npm run db:migrate) to apply the new secrets table.
+2. Install/update dependencies (e.g. npm install or bun install) so that tsc is available to pass type-checks.
+3. Write unit tests for SecretService and API routes.
+4. Expand SDK, CLI, Dashboard & IDE extensions per SECRET_MANAGER_ROADMAP.md.
+5. Publish packages and update CI fragments (Phase 11) to validate the secret‑manager build.
+
