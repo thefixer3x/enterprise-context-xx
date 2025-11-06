@@ -50,3 +50,8 @@ secrets/
 *.local
 config.local.json
 .vercel
+
+# Tempo-specific
+**/tempobook/dynamic/
+**/tempobook/storyboards/
+.next/
