@@ -1,0 +1,85 @@
+{
+  "manifest_version": "0.3",
+  "name": "lanonasis-enterprise-mcp",
+  "display_name": "Lanonasis Memory Intelligence",
+  "version": "1.0.0",
+  "description": "AI-powered memory management with semantic search, intelligent tagging, and pattern analysis",
+  "long_description": "Enterprise MCP server for Lanonasis Memory Intelligence platform. Features 28 tools for memory management, semantic search, API key management, and AI-powered analysis including duplicate detection, insight extraction, pattern analysis, and automatic content chunking. Includes enterprise reliability features: circuit breaker, caching, Prometheus metrics, and input sanitization.",
+  "author": {
+    "name": "Lanonasis Team",
+    "email": "support@lanonasis.com",
+    "url": "https://lanonasis.com"
+  },
+  "homepage": "https://lanonasis.com",
+  "repository": "https://github.com/thefixer3x/mcp-monorepo",
+  "documentation": "https://docs.lanonasis.com",
+  "icon": "icon.png",
+  "server": {
+    "type": "node",
+    "entry_point": "dist/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/dist/index.js"],
+      "env": {
+        "LANONASIS_API_KEY": "${user_config.api_key}",
+        "LANONASIS_API_URL": "https://api.lanonasis.com/api/v1",
+        "SUPABASE_FUNCTIONS_URL": "https://mxtsdgkwzjzlttpotole.supabase.co/functions/v1"
+      }
+    }
+  },
+  "user_config": [
+    {
+      "id": "api_key",
+      "name": "API Key",
+      "description": "Your Lanonasis API key (get one at https://lanonasis.com/dashboard/api-keys)",
+      "type": "string",
+      "required": true,
+      "sensitive": true,
+      "validation": {
+        "pattern": "^lms_(live|test)_[a-zA-Z0-9]{32,}$",
+        "message": "API key must start with 'lms_live_' or 'lms_test_' followed by 32+ characters"
+      }
+    }
+  ],
+  "tools": [
+    { "name": "list_memories", "description": "List memories with pagination and filters" },
+    { "name": "create_memory", "description": "Create a new memory with embeddings" },
+    { "name": "get_memory", "description": "Get a memory by ID" },
+    { "name": "update_memory", "description": "Update a memory" },
+    { "name": "delete_memory", "description": "Delete a memory" },
+    { "name": "search_memories", "description": "Semantic search across memories" },
+    { "name": "search_lanonasis_docs", "description": "Search documentation" },
+    { "name": "list_api_keys", "description": "List API keys" },
+    { "name": "create_api_key", "description": "Create a new API key" },
+    { "name": "delete_api_key", "description": "Delete an API key" },
+    { "name": "rotate_api_key", "description": "Rotate an API key" },
+    { "name": "revoke_api_key", "description": "Revoke an API key" },
+    { "name": "list_projects", "description": "List projects" },
+    { "name": "create_project", "description": "Create a project" },
+    { "name": "get_organization_info", "description": "Get organization info" },
+    { "name": "get_health_status", "description": "System health check" },
+    { "name": "get_auth_status", "description": "Authentication status" },
+    { "name": "get_config", "description": "Get configuration" },
+    { "name": "set_config", "description": "Set configuration" },
+    { "name": "intelligence_health_check", "description": "AI services health" },
+    { "name": "intelligence_suggest_tags", "description": "AI-powered tag suggestions" },
+    { "name": "intelligence_find_related", "description": "Find related memories" },
+    { "name": "intelligence_detect_duplicates", "description": "Detect duplicate memories" },
+    { "name": "intelligence_extract_insights", "description": "Extract insights from memories" },
+    { "name": "intelligence_analyze_patterns", "description": "Analyze usage patterns" },
+    { "name": "memory_stats", "description": "Memory usage statistics" },
+    { "name": "memory_bulk_delete", "description": "Bulk delete memories" },
+    { "name": "create_memory_chunked", "description": "Create memory with auto-chunking for large content" }
+  ],
+  "prompts": [
+    { "name": "memory_workflow", "description": "Guide for memory management workflows" },
+    { "name": "api_key_management", "description": "API key security best practices" },
+    { "name": "intelligence_guide", "description": "Memory intelligence features guide" }
+  ],
+  "compatibility": {
+    "platforms": ["macos", "windows", "linux"],
+    "runtime": {
+      "node": ">=20.0.0"
+    }
+  }
+}

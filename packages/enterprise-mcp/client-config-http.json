@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "lanonasis-enterprise": {
+      "transport": {
+        "type": "http",
+        "url": "https://mcp.lanonasis.com/mcp"
+      },
+      "env": {
+        "LANONASIS_API_KEY": "YOUR_API_KEY_HERE"
+      }
+    }
+  }
+}

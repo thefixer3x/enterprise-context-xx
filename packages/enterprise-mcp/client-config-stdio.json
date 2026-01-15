@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anthropics/claude-desktop/main/config-schema.json",
+  "_comment": "Claude Desktop config for enterprise-mcp (stdio transport)",
+  "mcpServers": {
+    "lanonasis-enterprise": {
+      "command": "node",
+      "args": [
+        "/opt/lanonasis/mcp-monorepo/packages/enterprise-mcp/dist/index.js"
+      ],
+      "env": {
+        "LANONASIS_API_KEY": "YOUR_API_KEY_HERE",
+        "LANONASIS_API_URL": "https://api.lanonasis.com/api/v1",
+        "SUPABASE_FUNCTIONS_URL": "https://mxtsdgkwzjzlttpotole.supabase.co/functions/v1"
+      }
+    }
+  }
+}
