@@ -1,0 +1,4 @@
+[submodule "packages/enterprise-mcp"]
+	path = packages/enterprise-mcp
+	url = git@github.com:lanonasis/enterprise-mcp.git
+	branch = main
