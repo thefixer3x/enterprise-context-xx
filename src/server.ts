@@ -20,6 +20,7 @@ import authRoutes from '@/routes/auth';
 import metricsRoutes from '@/routes/metrics';
 import apiKeyRoutes from '@/routes/api-keys';
 import mcpApiKeyRoutes from '@/routes/mcp-api-keys';
+import oauthRoutes from '@/routes/oauth';
 
 const app = express();
 
@@ -124,6 +125,10 @@ const swaggerOptions = {
       {
         name: 'Analytics',
         description: 'Usage analytics and security event monitoring'
+      },
+      {
+        name: 'OAuth',
+        description: 'OAuth 2.0 Authorization Server for MCP/Claude Desktop integration'
       }
     ],
     externalDocs: {
@@ -205,6 +210,9 @@ app.use(`${config.API_PREFIX}/${config.API_VERSION}/health`, healthRoutes);
 
 // Authentication routes (no auth required for login/register)
 app.use(`${config.API_PREFIX}/${config.API_VERSION}/auth`, authRoutes);
+
+// OAuth 2.0 routes (no auth required - these ARE the auth mechanism)
+app.use(`${config.API_PREFIX}/${config.API_VERSION}/oauth`, oauthRoutes);
 
 // Protected routes
 app.use(`${config.API_PREFIX}/${config.API_VERSION}/memory`, authMiddleware, memoryRoutes);
